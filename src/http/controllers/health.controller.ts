@@ -6,6 +6,7 @@ export class HealthController {
   public static build() {
     return new HealthController();
   }
+
   /**
    * this is a method only for test
    */
