@@ -23,3 +23,23 @@ model User {
 
   @@map("users")
 }
+
+model Category {
+  id              Int       @id @default(autoincrement())
+  name            Json
+  code            String    @unique
+  parent_id       Int?
+  is_selectable   Boolean   @default(true)
+
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+
+  // Self relation
+  parent          Category?  @relation("CategoryHierarchy", fields: [parent_id], references: [id])
+  children        Category[] @relation("CategoryHierarchy")
+
+  // Clothing items relation
+  // clothing_items  ClothingItem[]
+
+  @@map("categories")
+}
