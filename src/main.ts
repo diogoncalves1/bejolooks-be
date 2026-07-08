@@ -1,14 +1,12 @@
-import { ApiExpress } from "./api/express/api.express";
-import { HealthController } from "./api/express/controllers/health.controller";
+import { ApiExpress } from "./http/express";
+import { router } from "./http/routes";
 
 function main() {
   const api = ApiExpress.build();
 
-  const controller = HealthController.build();
+  api.registerRoutes(router);
 
-  api.addGetRoute("/health", controller.test);
-
-  api.start(3001);
+  api.start(8001);
 }
 
 main();
