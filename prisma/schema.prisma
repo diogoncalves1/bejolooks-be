@@ -20,26 +20,47 @@ model User {
   email_verified_at DateTime?
   created_at        DateTime?
   updated_at        DateTime?
+  clothingItems     ClothingItem[]
 
   @@map("users")
 }
 
 model Category {
-  id              Int       @id @default(autoincrement())
-  name            Json
-  code            String    @unique
-  parent_id       Int?
-  is_selectable   Boolean   @default(true)
+  id            Int     @id @default(autoincrement())
+  name          Json
+  code          String  @unique
+  parent_id     Int?
+  is_selectable Boolean @default(true)
 
-  created_at      DateTime  @default(now())
-  updated_at      DateTime  @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 
   // Self relation
-  parent          Category?  @relation("CategoryHierarchy", fields: [parent_id], references: [id])
-  children        Category[] @relation("CategoryHierarchy")
+  parent   Category?  @relation("CategoryHierarchy", fields: [parent_id], references: [id])
+  children Category[] @relation("CategoryHierarchy")
 
-  // Clothing items relation
-  // clothing_items  ClothingItem[]
+  clothingItems ClothingItem[]
 
   @@map("categories")
+}
+
+model ClothingItem {
+  id            Int       @id @default(autoincrement())
+  name          String
+  brand         String?
+  color         String?
+  size          String?
+  user          User      @relation(fields: [user_id], references: [id])
+  category      Category  @relation(fields: [category_id], references: [id])
+  season        String?
+  image_url     String?
+  purchase_date DateTime?
+  price         Float?
+
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+  user_id     String
+  category_id Int
+
+  @@map("clothing_items")
 }
